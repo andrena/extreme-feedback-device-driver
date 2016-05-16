@@ -5,10 +5,15 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.usb.UsbConfiguration;
 import javax.usb.UsbDevice;
 import javax.usb.UsbDeviceDescriptor;
+import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbException;
 import javax.usb.UsbHub;
+import javax.usb.UsbInterface;
+import javax.usb.UsbInterfacePolicy;
+import javax.usb.UsbNotActiveException;
 import javax.usb.UsbServices;
 
 public class ThunderMissileLauncherLocator implements MissileLauncherFactory {
@@ -47,6 +52,20 @@ public class ThunderMissileLauncherLocator implements MissileLauncherFactory {
 			} else {
 				UsbDeviceDescriptor desc = device.getUsbDeviceDescriptor();
 				if (desc.idVendor() == VENDOR_ID && desc.idProduct() == PRODUCT_ID) {
+					UsbConfiguration configuration = device.getUsbConfiguration((byte) 1);
+					UsbInterface iface = configuration.getUsbInterface((byte) 0);
+					try {
+						iface.claim(new UsbInterfacePolicy() {
+							@Override
+							public boolean forceClaim(UsbInterface usbInterface) {
+								return true;
+							}
+						});
+					} catch (UsbNotActiveException | UsbDisconnectedException | UsbException e) {
+						LOG.log(Level.WARNING, "Could not claim USB device", e);
+						continue;
+					}
+
 					return Optional.of(factory.create(device));
 				}
 			}

@@ -1,21 +1,30 @@
 package de.andrena.et2016.extremeFeedbackDevice.driver;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
+import javax.usb.UsbConfiguration;
 import javax.usb.UsbDevice;
 import javax.usb.UsbDeviceDescriptor;
 import javax.usb.UsbException;
 import javax.usb.UsbHub;
+import javax.usb.UsbInterface;
+import javax.usb.UsbInterfacePolicy;
 import javax.usb.UsbServices;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 public class ThunderMissileLauncherLocatorTest {
 	private static final short VENDOR_ID = 0x2123;
@@ -24,8 +33,30 @@ public class ThunderMissileLauncherLocatorTest {
 	private static final short OTHER_PRODUCT_ID = 0x42;
 
 	private UsbServices usbServices = mock(UsbServices.class);
+	private ThunderMissileLauncher expectedLauncher = mock(ThunderMissileLauncher.class);
 	private ThunderMissileLauncherFactory factory = mock(ThunderMissileLauncherFactory.class);
 	private ThunderMissileLauncherLocator locator = new ThunderMissileLauncherLocator(usbServices, factory);
+
+	private class MatchingDevice {
+		UsbDevice device = mock(UsbDevice.class);
+		UsbDeviceDescriptor descriptor = mock(UsbDeviceDescriptor.class);
+		UsbConfiguration configuration = mock(UsbConfiguration.class);
+		UsbInterface usbInterface = mock(UsbInterface.class);
+
+		MatchingDevice(UsbHub rootHub) {
+			when(device.getUsbDeviceDescriptor()).thenReturn(descriptor);
+			when(descriptor.idVendor()).thenReturn(VENDOR_ID);
+			when(descriptor.idProduct()).thenReturn(PRODUCT_ID);
+			when(device.getUsbConfiguration((byte) 1)).thenReturn(configuration);
+			when(configuration.getUsbInterface((byte) 0)).thenReturn(usbInterface);
+		}
+
+		public void assertConfiguration() throws Exception {
+			ArgumentCaptor<UsbInterfacePolicy> policyCaptor = forClass(UsbInterfacePolicy.class);
+			verify(usbInterface).claim(policyCaptor.capture());
+			assertThat(policyCaptor.getValue().forceClaim(usbInterface), is(true));
+		}
+	}
 
 	@Test
 	public void testRootHubNotAvailable() throws Exception {
@@ -37,22 +68,31 @@ public class ThunderMissileLauncherLocatorTest {
 	}
 
 	@Test
-	public void testMatchingDeviceIsFound() throws Exception {
+	public void testMatchingDeviceIsFoundAndClaimed() throws Exception {
 		UsbHub rootHub = mock(UsbHub.class);
 		when(usbServices.getRootUsbHub()).thenReturn(rootHub);
-		UsbDevice usbDevice = mock(UsbDevice.class);
-		when(rootHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(usbDevice));
-		UsbDeviceDescriptor descriptor = mock(UsbDeviceDescriptor.class);
-		when(usbDevice.getUsbDeviceDescriptor()).thenReturn(descriptor);
-		when(descriptor.idVendor()).thenReturn(VENDOR_ID);
-		when(descriptor.idProduct()).thenReturn(PRODUCT_ID);
-		ThunderMissileLauncher expectedLauncher = mock(ThunderMissileLauncher.class);
-		when(factory.create(usbDevice)).thenReturn(expectedLauncher);
+		MatchingDevice matchingUsbDevice = new MatchingDevice(rootHub);
+		when(rootHub.getAttachedUsbDevices()).thenReturn(asList(matchingUsbDevice.device));
+		when(factory.create(matchingUsbDevice.device)).thenReturn(expectedLauncher);
 
 		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(true));
 		assertThat(missileLauncher.get(), is(expectedLauncher));
+		matchingUsbDevice.assertConfiguration();
+	}
+
+	@Test
+	public void testMatchingDeviceIsSkippedIfClaimFails() throws Exception {
+		UsbHub rootHub = mock(UsbHub.class);
+		when(usbServices.getRootUsbHub()).thenReturn(rootHub);
+		MatchingDevice matchingUsbDevice = new MatchingDevice(rootHub);
+		when(rootHub.getAttachedUsbDevices()).thenReturn(asList(matchingUsbDevice.device));
+		doThrow(new UsbException()).when(matchingUsbDevice.usbInterface).claim(any(UsbInterfacePolicy.class));
+
+		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+
+		assertThat(missileLauncher.isPresent(), is(false));
 	}
 
 	@Test
@@ -73,20 +113,15 @@ public class ThunderMissileLauncherLocatorTest {
 		UsbHub childHub = mock(UsbHub.class);
 		when(childHub.isUsbHub()).thenReturn(true);
 		when(rootHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(childHub));
-		UsbDevice usbDevice = mock(UsbDevice.class);
-		when(childHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(usbDevice));
-		UsbDeviceDescriptor descriptor = mock(UsbDeviceDescriptor.class);
-		when(usbDevice.getUsbDeviceDescriptor()).thenReturn(descriptor);
-		when(descriptor.idVendor()).thenReturn(VENDOR_ID);
-		when(descriptor.idProduct()).thenReturn(PRODUCT_ID);
-		ThunderMissileLauncher expectedLauncher = mock(ThunderMissileLauncher.class);
-		when(factory.create(usbDevice)).thenReturn(expectedLauncher);
+		MatchingDevice matchingUsbDevice = new MatchingDevice(rootHub);
+		when(childHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(matchingUsbDevice.device));
+		when(factory.create(matchingUsbDevice.device)).thenReturn(expectedLauncher);
 
 		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(true));
 		assertThat(missileLauncher.get(), is(expectedLauncher));
-
+		matchingUsbDevice.assertConfiguration();
 	}
 
 	@Test
