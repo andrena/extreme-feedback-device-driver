@@ -1,0 +1,16 @@
+{"sequences": {
+	"fullRange": {"commands": [
+		{"command": "zeroLowerLeft"},
+		{"command": "right", "turnForMillis": 6000},
+		{"command": "up", "turnForMillis": 1500}
+	]},
+	"goWild": {"commands": [
+		{"command": "zeroLowerLeft"},
+		{"command": "up", "turnForMillis": 500},
+		{"command": "right", "turnForMillis": 500},
+		{"command": "fire", "numberOfShots": 2},
+		{"command": "right", "turnForMillis": 500},
+		{"command": "fire", "numberOfShots": 1},
+		{"command": "zeroLowerLeft"}
+	]}
+}}

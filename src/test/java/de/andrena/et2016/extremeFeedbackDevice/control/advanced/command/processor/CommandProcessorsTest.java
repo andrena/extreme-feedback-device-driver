@@ -1,5 +1,8 @@
 package de.andrena.et2016.extremeFeedbackDevice.control.advanced.command.processor;
 
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -59,4 +62,15 @@ public class CommandProcessorsTest {
 		verify(processor).process(sampleCommand);
 		verifyNoMoreInteractions(processor);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetCommandClassesArrayReturnsAllRegisteredCommands() {
+		registry.register(SampleCommand.class, processor);
+		registry.register(OtherSampleCommand.class, otherProcessor);
+
+		assertThat(asList(registry.getCommandClassesArray()),
+				containsInAnyOrder(SampleCommand.class, OtherSampleCommand.class));
+	}
+
 }
