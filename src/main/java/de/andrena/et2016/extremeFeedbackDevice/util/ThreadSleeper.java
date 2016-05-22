@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver;
+package de.andrena.et2016.extremeFeedbackDevice.util;
 
 public class ThreadSleeper implements Sleeper {
 

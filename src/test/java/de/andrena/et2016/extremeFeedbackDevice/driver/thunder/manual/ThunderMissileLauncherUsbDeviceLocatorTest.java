@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver;
+package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
@@ -26,16 +26,16 @@ import javax.usb.UsbServices;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-public class ThunderMissileLauncherLocatorTest {
+import de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual.ThunderMissileLauncherUsbDeviceLocator;
+
+public class ThunderMissileLauncherUsbDeviceLocatorTest {
 	private static final short VENDOR_ID = 0x2123;
 	private static final short OTHER_VENDOR_ID = 0x42;
 	private static final short PRODUCT_ID = 0x1010;
 	private static final short OTHER_PRODUCT_ID = 0x42;
 
 	private UsbServices usbServices = mock(UsbServices.class);
-	private ThunderMissileLauncher expectedLauncher = mock(ThunderMissileLauncher.class);
-	private ThunderMissileLauncherFactory factory = mock(ThunderMissileLauncherFactory.class);
-	private ThunderMissileLauncherLocator locator = new ThunderMissileLauncherLocator(usbServices, factory);
+	private ThunderMissileLauncherUsbDeviceLocator locator = new ThunderMissileLauncherUsbDeviceLocator(usbServices);
 
 	private class MatchingDevice {
 		UsbDevice device = mock(UsbDevice.class);
@@ -62,7 +62,7 @@ public class ThunderMissileLauncherLocatorTest {
 	public void testRootHubNotAvailable() throws Exception {
 		when(usbServices.getRootUsbHub()).thenThrow(new UsbException());
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(false));
 	}
@@ -73,12 +73,11 @@ public class ThunderMissileLauncherLocatorTest {
 		when(usbServices.getRootUsbHub()).thenReturn(rootHub);
 		MatchingDevice matchingUsbDevice = new MatchingDevice(rootHub);
 		when(rootHub.getAttachedUsbDevices()).thenReturn(asList(matchingUsbDevice.device));
-		when(factory.create(matchingUsbDevice.device)).thenReturn(expectedLauncher);
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(true));
-		assertThat(missileLauncher.get(), is(expectedLauncher));
+		assertThat(missileLauncher.get(), is(matchingUsbDevice.device));
 		matchingUsbDevice.assertConfiguration();
 	}
 
@@ -90,7 +89,7 @@ public class ThunderMissileLauncherLocatorTest {
 		when(rootHub.getAttachedUsbDevices()).thenReturn(asList(matchingUsbDevice.device));
 		doThrow(new UsbException()).when(matchingUsbDevice.usbInterface).claim(any(UsbInterfacePolicy.class));
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(false));
 	}
@@ -101,7 +100,7 @@ public class ThunderMissileLauncherLocatorTest {
 		when(usbServices.getRootUsbHub()).thenReturn(rootHub);
 		when(rootHub.getAttachedUsbDevices()).thenReturn(Collections.emptyList());
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(false));
 	}
@@ -115,12 +114,11 @@ public class ThunderMissileLauncherLocatorTest {
 		when(rootHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(childHub));
 		MatchingDevice matchingUsbDevice = new MatchingDevice(rootHub);
 		when(childHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(matchingUsbDevice.device));
-		when(factory.create(matchingUsbDevice.device)).thenReturn(expectedLauncher);
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(true));
-		assertThat(missileLauncher.get(), is(expectedLauncher));
+		assertThat(missileLauncher.get(), is(matchingUsbDevice.device));
 		matchingUsbDevice.assertConfiguration();
 	}
 
@@ -133,7 +131,7 @@ public class ThunderMissileLauncherLocatorTest {
 		when(rootHub.getAttachedUsbDevices()).thenReturn(Arrays.asList(childHub));
 		when(childHub.getAttachedUsbDevices()).thenReturn(Collections.emptyList());
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(false));
 	}
@@ -149,7 +147,7 @@ public class ThunderMissileLauncherLocatorTest {
 		when(descriptor.idVendor()).thenReturn(OTHER_VENDOR_ID);
 		when(descriptor.idProduct()).thenReturn(PRODUCT_ID);
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(false));
 	}
@@ -165,7 +163,7 @@ public class ThunderMissileLauncherLocatorTest {
 		when(descriptor.idVendor()).thenReturn(VENDOR_ID);
 		when(descriptor.idProduct()).thenReturn(OTHER_PRODUCT_ID);
 
-		Optional<MissileLauncher> missileLauncher = locator.findMissileLauncher();
+		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 
 		assertThat(missileLauncher.isPresent(), is(false));
 	}

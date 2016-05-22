@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver;
+package de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter;
 
 public interface TimeBasedTargetter {
 	void left(long forMillis);

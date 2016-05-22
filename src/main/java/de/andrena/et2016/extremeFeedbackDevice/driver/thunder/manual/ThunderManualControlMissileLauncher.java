@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver;
+package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual;
 
 import javax.usb.UsbConst;
 import javax.usb.UsbControlIrp;
@@ -6,8 +6,10 @@ import javax.usb.UsbDevice;
 import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbException;
 
-public class ThunderMissileLauncher implements MissileLauncher {
-	private enum Command {
+import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
+
+public class ThunderManualControlMissileLauncher implements ManualControlMissileLauncher {
+	private static enum Command {
 		DOWN(0x01), UP(0x02), LEFT(0x04), RIGHT(0x08), FIRE(0x10), STOP(0x20);
 
 		private byte opCode;
@@ -19,7 +21,7 @@ public class ThunderMissileLauncher implements MissileLauncher {
 
 	private UsbDevice device;
 
-	public ThunderMissileLauncher(UsbDevice device) {
+	public ThunderManualControlMissileLauncher(UsbDevice device) {
 		this.device = device;
 	}
 

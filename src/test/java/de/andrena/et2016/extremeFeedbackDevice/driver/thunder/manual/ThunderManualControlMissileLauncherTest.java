@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver;
+package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.rules.ExpectedException.none;
@@ -18,7 +18,9 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 import org.mockito.stubbing.OngoingStubbing;
 
-public class ThunderMissileLauncherTest {
+import de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual.ThunderManualControlMissileLauncher;
+
+public class ThunderManualControlMissileLauncherTest {
 	private static final byte REQUEST_TYPE = (byte) 0x21;
 	private static final byte REQUEST = (byte) 0x09;
 	private static final short REQUEST_INDEX = (short) 0;
@@ -28,7 +30,7 @@ public class ThunderMissileLauncherTest {
 	public ExpectedException thrown = none();
 
 	private UsbDevice usbDevice = mock(UsbDevice.class);
-	private ThunderMissileLauncher thunderMissileLauncher = new ThunderMissileLauncher(usbDevice);
+	private ThunderManualControlMissileLauncher thunderMissileLauncher = new ThunderManualControlMissileLauncher(usbDevice);
 	private UsbControlIrp irp = mock(UsbControlIrp.class);
 
 	@Test
