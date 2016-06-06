@@ -1,21 +1,17 @@
 package de.andrena.et2016.extremeFeedbackDevice.control.advanced;
 
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapter;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapterFactory;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedTargetter;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedToStartStopTargettingAdapterFactory;
-import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
 
 public class ManualToAdvancedMissileLauncherAdapter implements AdvancedControlMissileLauncher {
 
 	private TimeBasedTargetter timeBasedAdapter;
 	private SingleToMultiLauncherAdapter multiLauncherAdapter;
 
-	public ManualToAdvancedMissileLauncherAdapter(TimeBasedToStartStopTargettingAdapterFactory timeBasedAdapterFactory,
-			SingleToMultiLauncherAdapterFactory multiLauncherAdapterFactory,
-			ManualControlMissileLauncher manualControlMissileLauncher) {
-		this.timeBasedAdapter = timeBasedAdapterFactory.createFor(manualControlMissileLauncher);
-		this.multiLauncherAdapter = multiLauncherAdapterFactory.createFor(manualControlMissileLauncher);
+	public ManualToAdvancedMissileLauncherAdapter(TimeBasedTargetter timeBasedAdapter,
+			SingleToMultiLauncherAdapter multiLauncherAdapter) {
+		this.timeBasedAdapter = timeBasedAdapter;
+		this.multiLauncherAdapter = multiLauncherAdapter;
 	}
 
 	@Override

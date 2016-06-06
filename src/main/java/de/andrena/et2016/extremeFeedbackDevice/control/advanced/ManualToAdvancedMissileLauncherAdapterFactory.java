@@ -1,23 +1,24 @@
 package de.andrena.et2016.extremeFeedbackDevice.control.advanced;
 
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapterFactory;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedToStartStopTargettingAdapterFactory;
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapter;
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedTargetter;
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedToStartStopTargettingAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
+import de.andrena.et2016.extremeFeedbackDevice.util.Sleeper;
 
 public class ManualToAdvancedMissileLauncherAdapterFactory {
-	private TimeBasedToStartStopTargettingAdapterFactory timeBasedAdapterFactory;
-	private SingleToMultiLauncherAdapterFactory multiLauncherAdapterFactory;
+	private Sleeper sleeper;
 
-	public ManualToAdvancedMissileLauncherAdapterFactory(
-			TimeBasedToStartStopTargettingAdapterFactory timeBasedAdapterFactory,
-			SingleToMultiLauncherAdapterFactory multiLauncherAdapterFactory) {
-		this.timeBasedAdapterFactory = timeBasedAdapterFactory;
-		this.multiLauncherAdapterFactory = multiLauncherAdapterFactory;
+	public ManualToAdvancedMissileLauncherAdapterFactory(Sleeper sleeper) {
+		this.sleeper = sleeper;
 	}
 
 	public ManualToAdvancedMissileLauncherAdapter createFrom(
 			ManualControlMissileLauncher manualControlMissileLauncher) {
-		return new ManualToAdvancedMissileLauncherAdapter(timeBasedAdapterFactory, multiLauncherAdapterFactory,
-				manualControlMissileLauncher);
+		TimeBasedTargetter timeBasedTargettingAdapter = new TimeBasedToStartStopTargettingAdapter(
+				manualControlMissileLauncher, sleeper);
+		SingleToMultiLauncherAdapter multiLauncherAdapter = new SingleToMultiLauncherAdapter(
+				manualControlMissileLauncher, sleeper);
+		return new ManualToAdvancedMissileLauncherAdapter(timeBasedTargettingAdapter, multiLauncherAdapter);
 	}
 }
