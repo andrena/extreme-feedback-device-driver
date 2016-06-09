@@ -1,30 +1,35 @@
 package de.andrena.et2016.extremeFeedbackDevice.driver.dummy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.AdvancedControlMissileLauncher;
 
 public class DummyAdvancedControlMissileLauncher implements AdvancedControlMissileLauncher {
+	private static final Logger log = LoggerFactory.getLogger(DummyAdvancedControlMissileLauncher.class);
+
 	@Override
 	public void fire(int numberOfShots) {
-		System.out.println("firing " + numberOfShots + " shots");
+		log.info("firing " + numberOfShots + " shots");
 	}
 
 	@Override
 	public void up(long forMillis) {
-		System.out.println("moving up for " + forMillis + "ms");
+		log.info("moving up for " + forMillis + "ms");
 	}
 
 	@Override
 	public void right(long forMillis) {
-		System.out.println("moving right for " + forMillis + "ms");
+		log.info("moving right for " + forMillis + "ms");
 	}
 
 	@Override
 	public void left(long forMillis) {
-		System.out.println("moving left for " + forMillis + "ms");
+		log.info("moving left for " + forMillis + "ms");
 	}
 
 	@Override
 	public void down(long forMillis) {
-		System.out.println("moving down for " + forMillis + "ms");
+		log.info("moving down for " + forMillis + "ms");
 	}
 }

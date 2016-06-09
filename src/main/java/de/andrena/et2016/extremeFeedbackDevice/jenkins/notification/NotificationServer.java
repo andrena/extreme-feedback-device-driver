@@ -9,12 +9,17 @@ import java.net.URL;
 
 import javax.net.ServerSocketFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.CommandSequenceExecutor;
 import de.andrena.et2016.extremeFeedbackDevice.jenkins.culprit.Culprits;
 
 public class NotificationServer {
+	private static final Logger log = LoggerFactory.getLogger(NotificationServer.class);
+
 	public static void main(String[] args) {
 		int portNumber = Integer.parseInt(args[0]);
 		File controlSequencesDefinitionFile = new File(args[1]);
@@ -24,41 +29,40 @@ public class NotificationServer {
 		try (ServerSocket serverSocket = serverSockerFactory.createServerSocket()) {
 			serverSocket.setReuseAddress(true);
 			serverSocket.bind(new InetSocketAddress(portNumber));
-			System.out.println("Listening on port " + portNumber + " ...");
+			log.info("Listening on port " + portNumber + " ...");
 
 			while (true) {
 				try (Socket clientSocket = serverSocket.accept()) {
-					System.out.println(
-							"New connection from " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+					log.info("New connection from " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
 					ObjectMapper objectMapper = new ObjectMapper();
 					Notification notification = objectMapper.readValue(clientSocket.getInputStream(),
 							Notification.class);
 					String status = notification.getBuild()
 							.getStatus();
-					System.out.println("Status: " + status);
-					System.out.println("Full URL: " + notification.getBuild()
+					log.info("Status: " + status);
+					log.info("Full URL: " + notification.getBuild()
 							.getFullUrl());
 
 					if ("SUCCESS".equals(status) || "ABORTED".equals(status)) {
-						System.out.println("Skipping retaliation");
+						log.info("Skipping retaliation");
 						continue;
 					}
 					URL culpritsUrl = new URL(notification.getBuild()
 							.getFullUrl() + "/api/json?pretty=true&tree=culprits[fullName]");
-					System.out.println("Requesting culprits from " + culpritsUrl + " ...");
+					log.info("Requesting culprits from " + culpritsUrl + " ...");
 					Culprits culprits = objectMapper.readValue(culpritsUrl, Culprits.class);
-					System.out.println("Culprits: " + culprits.getFullNames());
+					log.info("Culprits: " + culprits.getFullNames());
 					for (String culprit : culprits.getFullNames()) {
-						System.out.println("Retaliating against " + culprit);
+						log.info("Retaliating against " + culprit);
 						commandSequenceExecutor.runControlSequence(culprit);
 					}
 				} catch (IOException e) {
-					System.err.println(e.toString());
+					log.error(e.toString());
 				}
 			}
 		} catch (IOException e) {
-			System.err.println("Error listening on port " + portNumber + ": " + e.toString());
+			log.error("Error listening on port " + portNumber + ": " + e.toString());
 		}
 	}
 }

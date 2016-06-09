@@ -2,8 +2,6 @@ package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.usb.UsbConfiguration;
 import javax.usb.UsbDevice;
@@ -16,8 +14,12 @@ import javax.usb.UsbInterfacePolicy;
 import javax.usb.UsbNotActiveException;
 import javax.usb.UsbServices;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ThunderMissileLauncherUsbDeviceLocator {
-	private static Logger LOG = Logger.getLogger(ThunderMissileLauncherUsbDeviceLocator.class.getName());
+	private static Logger log = LoggerFactory.getLogger(ThunderMissileLauncherUsbDeviceLocator.class);
+
 	private static final short VENDOR_ID = 0x2123;
 	private static final short PRODUCT_ID = 0x1010;
 
@@ -32,7 +34,7 @@ public class ThunderMissileLauncherUsbDeviceLocator {
 		try {
 			rootUsbHub = usbServices.getRootUsbHub();
 		} catch (SecurityException | UsbException e) {
-			LOG.log(Level.WARNING, "Could not retrieve USB root hub", e);
+			log.warn("Could not retrieve USB root hub", e);
 			return Optional.empty();
 		}
 		return findAndClaimMissileLauncherOnHub(rootUsbHub);
@@ -59,7 +61,7 @@ public class ThunderMissileLauncherUsbDeviceLocator {
 							}
 						});
 					} catch (UsbNotActiveException | UsbDisconnectedException | UsbException e) {
-						LOG.log(Level.WARNING, "Could not claim USB device", e);
+						log.warn("Could not claim USB device", e);
 						continue;
 					}
 
