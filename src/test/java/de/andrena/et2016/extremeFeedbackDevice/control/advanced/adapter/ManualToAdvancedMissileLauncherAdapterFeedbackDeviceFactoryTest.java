@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.advanced;
+package de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -12,17 +12,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.AdvancedControlMissileLauncher;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.ManualToAdvancedMissileLauncherAdapter;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.ManualToAdvancedMissileLauncherAdapterFactory;
 import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
 import de.andrena.et2016.extremeFeedbackDevice.driver.FeedbackDeviceFactory;
 
-public class ThunderAdvancedControlMissileLauncherFeedbackDeviceFactoryTest {
+public class ManualToAdvancedMissileLauncherAdapterFeedbackDeviceFactoryTest {
 	private interface UnsupportedInterface {
 	}
 
 	private FeedbackDeviceFactory manualFactory;
-	private ThunderAdvancedControlMissileLauncherFeedbackDeviceFactory feedbackDeviceFactory;
+	private ManualToAdvancedMissileLauncherAdapterFeedbackDeviceFactory feedbackDeviceFactory;
 	private ManualToAdvancedMissileLauncherAdapterFactory adapterFactory = mock(
 			ManualToAdvancedMissileLauncherAdapterFactory.class);
 
@@ -35,7 +33,7 @@ public class ThunderAdvancedControlMissileLauncherFeedbackDeviceFactoryTest {
 
 	@Before
 	public void setUpFeedbackDeviceFactory() {
-		feedbackDeviceFactory = new ThunderAdvancedControlMissileLauncherFeedbackDeviceFactory(manualFactory,
+		feedbackDeviceFactory = new ManualToAdvancedMissileLauncherAdapterFeedbackDeviceFactory(manualFactory,
 				adapterFactory);
 	}
 

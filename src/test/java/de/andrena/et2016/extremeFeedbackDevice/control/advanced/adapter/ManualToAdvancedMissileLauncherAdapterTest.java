@@ -1,4 +1,4 @@
-package de.andrena.et2016.extremeFeedbackDevice.control.advanced;
+package de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Test;
 
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter.ManualToAdvancedMissileLauncherAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedTargetter;
 

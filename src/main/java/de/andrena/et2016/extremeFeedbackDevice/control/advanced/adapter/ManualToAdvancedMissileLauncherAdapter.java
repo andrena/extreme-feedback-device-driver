@@ -1,5 +1,6 @@
-package de.andrena.et2016.extremeFeedbackDevice.control.advanced;
+package de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter;
 
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.AdvancedControlMissileLauncher;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedTargetter;
 

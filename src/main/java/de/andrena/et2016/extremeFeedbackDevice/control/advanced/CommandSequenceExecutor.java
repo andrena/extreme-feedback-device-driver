@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter.ManualToAdvancedMissileLauncherAdapterConfig;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.command.CommandConfig;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.command.processor.CommandProcessors;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.sequence.ControlSequenceProcessor;
@@ -53,9 +54,10 @@ public class CommandSequenceExecutor {
 	}
 
 	private FeedbackDeviceFactory createFactory() {
-		RegistryBasedFeedbackDeviceFactory registry = new RegistryBasedFeedbackDeviceFactory();
-		new ThunderRegisteringConfig(registry);
-		new DummyRegisteringConfig(registry);
-		return registry;
+		RegistryBasedFeedbackDeviceFactory registryBasedFactory = new RegistryBasedFeedbackDeviceFactory();
+		new ThunderRegisteringConfig(registryBasedFactory);
+		new DummyRegisteringConfig(registryBasedFactory);
+		new ManualToAdvancedMissileLauncherAdapterConfig(registryBasedFactory, registryBasedFactory);
+		return registryBasedFactory;
 	}
 }

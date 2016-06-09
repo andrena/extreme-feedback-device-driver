@@ -1,18 +1,17 @@
-package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.advanced;
+package de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter;
 
 import java.util.Optional;
 
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.AdvancedControlMissileLauncher;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.ManualToAdvancedMissileLauncherAdapterFactory;
 import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
 import de.andrena.et2016.extremeFeedbackDevice.driver.FeedbackDeviceFactory;
 
-public class ThunderAdvancedControlMissileLauncherFeedbackDeviceFactory implements FeedbackDeviceFactory {
+public class ManualToAdvancedMissileLauncherAdapterFeedbackDeviceFactory implements FeedbackDeviceFactory {
 
 	private FeedbackDeviceFactory manualFactory;
 	private ManualToAdvancedMissileLauncherAdapterFactory adapterFactory;
 
-	public ThunderAdvancedControlMissileLauncherFeedbackDeviceFactory(FeedbackDeviceFactory manualFactory,
+	public ManualToAdvancedMissileLauncherAdapterFeedbackDeviceFactory(FeedbackDeviceFactory manualFactory,
 			ManualToAdvancedMissileLauncherAdapterFactory adapterFactory) {
 		this.manualFactory = manualFactory;
 		this.adapterFactory = adapterFactory;
