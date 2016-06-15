@@ -6,14 +6,16 @@
 	]},
 	"fabian.knittel": {"commands": [
 		{"command": "zeroLowerLeft"},
-		{"command": "right", "turnForMillis": 6000},
-		{"command": "up", "turnForMillis": 1500},
-		{"command": "fire", "numberOfShots": 1}
+		{"command": "right", "turnForMillis": 3100},
+		{"command": "up", "turnForMillis": 900},
+		{"command": "fire", "numberOfShots": 1},
+		{"command": "zeroLowerLeft"}
 	]},
 	"john.wayne": {"commands": [
 		{"command": "zeroLowerLeft"},
 		{"command": "up", "turnForMillis": 500},
 		{"command": "right", "turnForMillis": 500},
-		{"command": "fire", "numberOfShots": 1}
+		{"command": "fire", "numberOfShots": 1},
+		{"command": "zeroLowerLeft"}
 	]}
 }}
