@@ -1,4 +1,9 @@
 {"sequences": {
+	"park": {"commands": [
+		{"command": "zeroLowerLeft"},
+		{"command": "right", "turnForMillis": 2850},
+		{"command": "up", "turnForMillis": 200}
+	]},
 	"fabian.knittel": {"commands": [
 		{"command": "zeroLowerLeft"},
 		{"command": "right", "turnForMillis": 6000},
