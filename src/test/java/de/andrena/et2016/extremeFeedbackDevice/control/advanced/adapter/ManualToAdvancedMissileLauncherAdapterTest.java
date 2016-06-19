@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import org.junit.Test;
 
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.adapter.ManualToAdvancedMissileLauncherAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.SingleToMultiLauncherAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedTargetter;
 

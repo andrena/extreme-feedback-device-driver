@@ -9,7 +9,6 @@ import static org.mockito.Mockito.mock;
 import org.junit.Test;
 
 import de.andrena.et2016.extremeFeedbackDevice.control.advanced.command.Command;
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.sequence.ControlSequence;
 
 public class ControlSequenceTest {
 	@Test

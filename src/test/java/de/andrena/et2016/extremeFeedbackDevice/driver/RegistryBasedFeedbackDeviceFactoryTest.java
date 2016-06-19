@@ -17,7 +17,8 @@ public class RegistryBasedFeedbackDeviceFactoryTest {
 
 	@Test
 	public void testNoRegisteredFactoriesFindsNoMissileLauncher() {
-		Optional<SampleDeviceInterface> launcher = registry.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
+		Optional<SampleDeviceInterface> launcher = registry
+				.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
 
 		assertThat(launcher.isPresent(), is(false));
 	}
@@ -25,10 +26,12 @@ public class RegistryBasedFeedbackDeviceFactoryTest {
 	@Test
 	public void testSingleRegisteredFactoryIsCalledOnFindMissileLauncher() {
 		FeedbackDeviceFactory factory = mock(FeedbackDeviceFactory.class);
-		when(factory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class)).thenReturn(Optional.empty());
+		when(factory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class))
+				.thenReturn(Optional.empty());
 		registry.addFactory(factory);
 
-		Optional<SampleDeviceInterface> launcher = registry.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
+		Optional<SampleDeviceInterface> launcher = registry
+				.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
 
 		assertThat(launcher.isPresent(), is(false));
 	}
@@ -37,10 +40,12 @@ public class RegistryBasedFeedbackDeviceFactoryTest {
 	public void testSingleRegisteredFactoryCallResultIsPassedOn() {
 		SampleDeviceInterface sampleDevice = mock(SampleDeviceInterface.class);
 		FeedbackDeviceFactory factory = mock(FeedbackDeviceFactory.class);
-		when(factory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class)).thenReturn(Optional.of(sampleDevice));
+		when(factory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class))
+				.thenReturn(Optional.of(sampleDevice));
 		registry.addFactory(factory);
 
-		Optional<SampleDeviceInterface> launcher = registry.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
+		Optional<SampleDeviceInterface> launcher = registry
+				.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
 
 		assertThat(launcher.isPresent(), is(true));
 		assertThat(launcher.get(), is(sampleDevice));
@@ -49,15 +54,18 @@ public class RegistryBasedFeedbackDeviceFactoryTest {
 	@Test
 	public void testForMultipleFactoriesTheFirstSuccessfulFactoryReturnsInstance() {
 		FeedbackDeviceFactory firstFactory = mock(FeedbackDeviceFactory.class);
-		when(firstFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class)).thenReturn(Optional.empty());
+		when(firstFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class))
+				.thenReturn(Optional.empty());
 		registry.addFactory(firstFactory);
 
 		FeedbackDeviceFactory secondFactory = mock(FeedbackDeviceFactory.class);
 		SampleDeviceInterface sampleDevice = mock(SampleDeviceInterface.class);
-		when(firstFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class)).thenReturn(Optional.of(sampleDevice));
+		when(firstFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class))
+				.thenReturn(Optional.of(sampleDevice));
 		registry.addFactory(secondFactory);
 
-		Optional<SampleDeviceInterface> launcher = registry.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
+		Optional<SampleDeviceInterface> launcher = registry
+				.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
 
 		assertThat(launcher.isPresent(), is(true));
 		assertThat(launcher.get(), is(sampleDevice));
@@ -67,14 +75,17 @@ public class RegistryBasedFeedbackDeviceFactoryTest {
 	public void testForMultipleFactoriesFollowingFactoriesAreNotCalled() {
 		FeedbackDeviceFactory firstFactory = mock(FeedbackDeviceFactory.class);
 		SampleDeviceInterface sampleDevice = mock(SampleDeviceInterface.class);
-		when(firstFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class)).thenReturn(Optional.of(sampleDevice));
+		when(firstFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class))
+				.thenReturn(Optional.of(sampleDevice));
 		registry.addFactory(firstFactory);
 
 		FeedbackDeviceFactory secondFactory = mock(FeedbackDeviceFactory.class);
-		when(secondFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class)).thenReturn(Optional.empty());
+		when(secondFactory.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class))
+				.thenReturn(Optional.empty());
 		registry.addFactory(secondFactory);
 
-		Optional<SampleDeviceInterface> launcher = registry.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
+		Optional<SampleDeviceInterface> launcher = registry
+				.findFeedbackDeviceSupportingControlInterface(SampleDeviceInterface.class);
 
 		assertThat(launcher.isPresent(), is(true));
 		assertThat(launcher.get(), is(sampleDevice));

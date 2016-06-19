@@ -48,7 +48,8 @@ public class ThunderManualControlMissileLauncherTest {
 	public void testStartDownPassesOnUsbDisconnectException() throws Exception {
 		whenExpectedUsbControlIrpIsCreated().thenReturn(irp);
 		UsbDisconnectedException usbException = new UsbDisconnectedException();
-		doThrow(usbException).when(usbDevice).syncSubmit(irp);
+		doThrow(usbException).when(usbDevice)
+				.syncSubmit(irp);
 
 		thrown.expect(RuntimeException.class);
 		thrown.expectMessage("Failed to send launcher command: USB syncSubmit failed");
@@ -118,8 +119,10 @@ public class ThunderManualControlMissileLauncherTest {
 	private void verifyCommandIsSynchronouslySubmittedWithCode(UsbDevice usbDevice, UsbControlIrp irp, byte commandCode)
 			throws UsbException {
 		InOrder inOrder = inOrder(irp, usbDevice);
-		inOrder.verify(irp).setData(new byte[] { 0x02, commandCode, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
-		inOrder.verify(usbDevice).syncSubmit(irp);
+		inOrder.verify(irp)
+				.setData(new byte[] { 0x02, commandCode, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
+		inOrder.verify(usbDevice)
+				.syncSubmit(irp);
 	}
 
 	private OngoingStubbing<UsbControlIrp> whenExpectedUsbControlIrpIsCreated() {

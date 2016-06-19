@@ -15,8 +15,9 @@ public class NotificationTest {
 		ObjectMapper objectMapper = new ObjectMapper();
 		Notification notification = objectMapper.readValue(data, Notification.class);
 
-		assertThat(notification.getBuild().getStatus(), is("UNSTABLE"));
-		assertThat(notification.getBuild().getFullUrl(),
-				is("http://docker-vm:8080/job/extreme-feedback-device-driver/11/"));
+		assertThat(notification.getBuild()
+				.getStatus(), is("UNSTABLE"));
+		assertThat(notification.getBuild()
+				.getFullUrl(), is("http://docker-vm:8080/job/extreme-feedback-device-driver/11/"));
 	}
 }

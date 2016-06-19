@@ -26,8 +26,6 @@ import javax.usb.UsbServices;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual.ThunderMissileLauncherUsbDeviceLocator;
-
 public class ThunderMissileLauncherUsbDeviceLocatorTest {
 	private static final short VENDOR_ID = 0x2123;
 	private static final short OTHER_VENDOR_ID = 0x42;
@@ -54,7 +52,8 @@ public class ThunderMissileLauncherUsbDeviceLocatorTest {
 		public void assertConfiguration() throws Exception {
 			ArgumentCaptor<UsbInterfacePolicy> policyCaptor = forClass(UsbInterfacePolicy.class);
 			verify(usbInterface).claim(policyCaptor.capture());
-			assertThat(policyCaptor.getValue().forceClaim(usbInterface), is(true));
+			assertThat(policyCaptor.getValue()
+					.forceClaim(usbInterface), is(true));
 		}
 	}
 
@@ -87,7 +86,8 @@ public class ThunderMissileLauncherUsbDeviceLocatorTest {
 		when(usbServices.getRootUsbHub()).thenReturn(rootHub);
 		MatchingDevice matchingUsbDevice = new MatchingDevice(rootHub);
 		when(rootHub.getAttachedUsbDevices()).thenReturn(asList(matchingUsbDevice.device));
-		doThrow(new UsbException()).when(matchingUsbDevice.usbInterface).claim(any(UsbInterfacePolicy.class));
+		doThrow(new UsbException()).when(matchingUsbDevice.usbInterface)
+				.claim(any(UsbInterfacePolicy.class));
 
 		Optional<UsbDevice> missileLauncher = locator.findAndClaimMissileLauncher();
 

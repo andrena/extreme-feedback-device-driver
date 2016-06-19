@@ -23,7 +23,8 @@ public class CommandConfig {
 		return processors;
 	}
 
-	private void registerCommandProcessors(CommandProcessorRegistry processors, AdvancedControlMissileLauncher launcher) {
+	private void registerCommandProcessors(CommandProcessorRegistry processors,
+			AdvancedControlMissileLauncher launcher) {
 		processors.register(ZeroLowerLeftCommand.class, new ZeroLowerLeftProcessor(launcher));
 		processors.register(UpCommand.class, new UpProcessor(launcher));
 		processors.register(DownCommand.class, new DownProcessor(launcher));

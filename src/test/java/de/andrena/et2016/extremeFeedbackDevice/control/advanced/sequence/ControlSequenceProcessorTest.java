@@ -47,9 +47,12 @@ public class ControlSequenceProcessorTest {
 		processor.processSequence(controlSequence);
 
 		InOrder inOrder = inOrder(commandProcessor);
-		inOrder.verify(commandProcessor, times(1)).processCommand(commandA);
-		inOrder.verify(commandProcessor, times(1)).processCommand(commandB);
-		inOrder.verify(commandProcessor, times(1)).processCommand(commandA);
+		inOrder.verify(commandProcessor, times(1))
+				.processCommand(commandA);
+		inOrder.verify(commandProcessor, times(1))
+				.processCommand(commandB);
+		inOrder.verify(commandProcessor, times(1))
+				.processCommand(commandA);
 		inOrder.verifyNoMoreInteractions();
 	}
 }

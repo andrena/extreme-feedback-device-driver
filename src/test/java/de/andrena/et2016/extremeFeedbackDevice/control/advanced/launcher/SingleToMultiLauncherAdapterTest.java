@@ -33,8 +33,10 @@ public class SingleToMultiLauncherAdapterTest {
 		adapter.fire(1);
 
 		InOrder inOrder = inOrder(singleLauncher, sleeper);
-		inOrder.verify(sleeper).sleep(INITIAL_DELAY);
-		inOrder.verify(singleLauncher).fireOnce();
+		inOrder.verify(sleeper)
+				.sleep(INITIAL_DELAY);
+		inOrder.verify(singleLauncher)
+				.fireOnce();
 	}
 
 	@Test
@@ -42,9 +44,13 @@ public class SingleToMultiLauncherAdapterTest {
 		adapter.fire(2);
 
 		InOrder inOrder = inOrder(singleLauncher, sleeper);
-		inOrder.verify(singleLauncher).fireOnce();
-		inOrder.verify(sleeper).sleep(FIRING_DELAY);
-		inOrder.verify(singleLauncher).fireOnce();
-		inOrder.verify(sleeper).sleep(FIRING_DELAY);
+		inOrder.verify(singleLauncher)
+				.fireOnce();
+		inOrder.verify(sleeper)
+				.sleep(FIRING_DELAY);
+		inOrder.verify(singleLauncher)
+				.fireOnce();
+		inOrder.verify(sleeper)
+				.sleep(FIRING_DELAY);
 	}
 }

@@ -5,8 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.command.right.RightCommand;
-
 public class RightCommandTest {
 	@Test
 	public void testConstructorPassesMillis() {

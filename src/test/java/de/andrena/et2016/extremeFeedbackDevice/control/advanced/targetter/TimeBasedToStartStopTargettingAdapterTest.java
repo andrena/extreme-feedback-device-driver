@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import org.junit.Test;
 import org.mockito.InOrder;
 
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.targetter.TimeBasedToStartStopTargettingAdapter;
 import de.andrena.et2016.extremeFeedbackDevice.control.manual.StartStopTargetter;
 import de.andrena.et2016.extremeFeedbackDevice.util.Sleeper;
 
@@ -23,9 +22,12 @@ public class TimeBasedToStartStopTargettingAdapterTest {
 		adapter.left(12);
 
 		InOrder inOrder = inOrder(sleeper, startStopTargetter);
-		inOrder.verify(startStopTargetter).startLeft();
-		inOrder.verify(sleeper).sleep(12L);
-		inOrder.verify(startStopTargetter).stop();
+		inOrder.verify(startStopTargetter)
+				.startLeft();
+		inOrder.verify(sleeper)
+				.sleep(12L);
+		inOrder.verify(startStopTargetter)
+				.stop();
 	}
 
 	@Test
@@ -33,9 +35,12 @@ public class TimeBasedToStartStopTargettingAdapterTest {
 		adapter.right(12);
 
 		InOrder inOrder = inOrder(sleeper, startStopTargetter);
-		inOrder.verify(startStopTargetter).startRight();
-		inOrder.verify(sleeper).sleep(12L);
-		inOrder.verify(startStopTargetter).stop();
+		inOrder.verify(startStopTargetter)
+				.startRight();
+		inOrder.verify(sleeper)
+				.sleep(12L);
+		inOrder.verify(startStopTargetter)
+				.stop();
 	}
 
 	@Test
@@ -43,9 +48,12 @@ public class TimeBasedToStartStopTargettingAdapterTest {
 		adapter.up(12);
 
 		InOrder inOrder = inOrder(sleeper, startStopTargetter);
-		inOrder.verify(startStopTargetter).startUp();
-		inOrder.verify(sleeper).sleep(12L);
-		inOrder.verify(startStopTargetter).stop();
+		inOrder.verify(startStopTargetter)
+				.startUp();
+		inOrder.verify(sleeper)
+				.sleep(12L);
+		inOrder.verify(startStopTargetter)
+				.stop();
 	}
 
 	@Test
@@ -53,8 +61,11 @@ public class TimeBasedToStartStopTargettingAdapterTest {
 		adapter.down(SLEEP_TIME);
 
 		InOrder inOrder = inOrder(sleeper, startStopTargetter);
-		inOrder.verify(startStopTargetter).startDown();
-		inOrder.verify(sleeper).sleep(12L);
-		inOrder.verify(startStopTargetter).stop();
+		inOrder.verify(startStopTargetter)
+				.startDown();
+		inOrder.verify(sleeper)
+				.sleep(12L);
+		inOrder.verify(startStopTargetter)
+				.stop();
 	}
 }

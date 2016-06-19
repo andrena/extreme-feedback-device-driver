@@ -5,8 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
 
-import de.andrena.et2016.extremeFeedbackDevice.control.advanced.command.TimeBasedMoveCommand;
-
 public class TimeBasedMoveCommandTest {
 	@Test
 	public void testForMillisProperty() {
