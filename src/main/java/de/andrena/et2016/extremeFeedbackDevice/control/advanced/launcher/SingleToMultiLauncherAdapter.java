@@ -5,8 +5,8 @@ import de.andrena.et2016.extremeFeedbackDevice.util.Sleeper;
 
 public class SingleToMultiLauncherAdapter implements MultiLauncher {
 
-	private static final long FIRING_DELAY = 2500L;
-	private static final long INITIAL_STABILIZATION = 500L;
+	private static final long FIRING_DELAY = 3100L;
+	private static final long INITIAL_STABILIZATION = 600L;
 	private SingleLauncher singleLauncher;
 	private Sleeper sleeper;
 
