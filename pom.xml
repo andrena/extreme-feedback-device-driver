@@ -9,6 +9,12 @@
 
 	<name>${project.artifactId}</name>
 	<description>An example extreme feedback driver and build notification listener for the Thunder Missile Launcher as a demo for the EntwicklerTag Karlsruhe 2016.</description>
+	<url>https://github.com/andrena/extreme-feedback-device-driver</url>
+	<scm>
+		<connection>scm:git:git@github.com:andrena/extreme-feedback-device-driver.git</connection>
+		<developerConnection>scm:git:git@github.com:andrena/extreme-feedback-device-driver.git</developerConnection>
+		<url>git@github.com:andrena/extreme-feedback-device-driver.git</url>
+	</scm>
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
