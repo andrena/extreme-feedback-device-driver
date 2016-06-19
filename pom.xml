@@ -7,7 +7,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>extreme-feedback-device-driver</name>
+	<name>${project.artifactId}</name>
+	<description>An example extreme feedback driver and build notification listener for the Thunder Missile Launcher as a demo for the EntwicklerTag Karlsruhe 2016.</description>
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+			<name>Fabian Knittel</name>
+			<organization>andrena objects ag</organization>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
