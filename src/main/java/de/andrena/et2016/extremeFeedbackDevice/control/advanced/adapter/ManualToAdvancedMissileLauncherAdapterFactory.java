@@ -18,7 +18,8 @@ public class ManualToAdvancedMissileLauncherAdapterFactory {
 		TimeBasedTargetter timeBasedTargettingAdapter = new TimeBasedToStartStopTargettingAdapter(
 				manualControlMissileLauncher, sleeper);
 		SingleToMultiLauncherAdapter multiLauncherAdapter = new SingleToMultiLauncherAdapter(
-				manualControlMissileLauncher, sleeper);
+				manualControlMissileLauncher, sleeper,
+				manualControlMissileLauncher.getMultiLauncherDeviceSpecification());
 		return new ManualToAdvancedMissileLauncherAdapter(timeBasedTargettingAdapter, multiLauncherAdapter);
 	}
 }

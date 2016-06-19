@@ -5,22 +5,23 @@ import de.andrena.et2016.extremeFeedbackDevice.util.Sleeper;
 
 public class SingleToMultiLauncherAdapter implements MultiLauncher {
 
-	private static final long FIRING_DELAY = 3100L;
-	private static final long INITIAL_STABILIZATION = 600L;
 	private SingleLauncher singleLauncher;
 	private Sleeper sleeper;
+	private MultiLauncherDeviceSpecification specification;
 
-	public SingleToMultiLauncherAdapter(SingleLauncher singleLauncher, Sleeper sleeper) {
+	public SingleToMultiLauncherAdapter(SingleLauncher singleLauncher, Sleeper sleeper,
+			MultiLauncherDeviceSpecification specification) {
 		this.singleLauncher = singleLauncher;
 		this.sleeper = sleeper;
+		this.specification = specification;
 	}
 
 	@Override
 	public void fire(int numberOfShots) {
-		sleeper.sleep(INITIAL_STABILIZATION);
+		sleeper.sleep(specification.minimumInitialStabilizationDelay());
 		for (int i = 0; i < numberOfShots; ++i) {
 			singleLauncher.fireOnce();
-			sleeper.sleep(FIRING_DELAY);
+			sleeper.sleep(specification.minimumFiringDelay());
 		}
 	}
 }

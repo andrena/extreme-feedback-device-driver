@@ -3,6 +3,7 @@ package de.andrena.et2016.extremeFeedbackDevice.driver.dummy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.MultiLauncherDeviceSpecification;
 import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
 
 public class DummyManualControlMissileLauncher implements ManualControlMissileLauncher {
@@ -36,5 +37,21 @@ public class DummyManualControlMissileLauncher implements ManualControlMissileLa
 	@Override
 	public void stop() {
 		log.info("stopping");
+	}
+
+	@Override
+	public MultiLauncherDeviceSpecification getMultiLauncherDeviceSpecification() {
+		return new MultiLauncherDeviceSpecification() {
+
+			@Override
+			public long minimumInitialStabilizationDelay() {
+				return 0L;
+			}
+
+			@Override
+			public long minimumFiringDelay() {
+				return 0L;
+			}
+		};
 	}
 }

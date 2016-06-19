@@ -6,6 +6,7 @@ import javax.usb.UsbDevice;
 import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbException;
 
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.MultiLauncherDeviceSpecification;
 import de.andrena.et2016.extremeFeedbackDevice.control.manual.ManualControlMissileLauncher;
 
 public class ThunderManualControlMissileLauncher implements ManualControlMissileLauncher {
@@ -18,6 +19,8 @@ public class ThunderManualControlMissileLauncher implements ManualControlMissile
 			this.opCode = (byte) opCode;
 		}
 	}
+
+	private static MultiLauncherDeviceSpecification SPECIFICATION = new ThunderMissileLauncherMultiLauncherSpecification();
 
 	private UsbDevice device;
 
@@ -70,5 +73,10 @@ public class ThunderManualControlMissileLauncher implements ManualControlMissile
 	@Override
 	public void fireOnce() {
 		sendCommand(Command.FIRE);
+	}
+
+	@Override
+	public MultiLauncherDeviceSpecification getMultiLauncherDeviceSpecification() {
+		return SPECIFICATION;
 	}
 }

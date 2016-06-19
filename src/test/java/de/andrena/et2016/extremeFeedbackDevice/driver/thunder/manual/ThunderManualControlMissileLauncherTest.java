@@ -1,6 +1,7 @@
 package de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 import static org.junit.rules.ExpectedException.none;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
@@ -18,7 +19,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 import org.mockito.stubbing.OngoingStubbing;
 
-import de.andrena.et2016.extremeFeedbackDevice.driver.thunder.manual.ThunderManualControlMissileLauncher;
+import de.andrena.et2016.extremeFeedbackDevice.control.advanced.launcher.MultiLauncherDeviceSpecification;
 
 public class ThunderManualControlMissileLauncherTest {
 	private static final byte REQUEST_TYPE = (byte) 0x21;
@@ -30,7 +31,8 @@ public class ThunderManualControlMissileLauncherTest {
 	public ExpectedException thrown = none();
 
 	private UsbDevice usbDevice = mock(UsbDevice.class);
-	private ThunderManualControlMissileLauncher thunderMissileLauncher = new ThunderManualControlMissileLauncher(usbDevice);
+	private ThunderManualControlMissileLauncher thunderMissileLauncher = new ThunderManualControlMissileLauncher(
+			usbDevice);
 	private UsbControlIrp irp = mock(UsbControlIrp.class);
 
 	@Test
@@ -97,6 +99,20 @@ public class ThunderManualControlMissileLauncherTest {
 		thunderMissileLauncher.stop();
 
 		verifyCommandIsSynchronouslySubmittedWithCode(usbDevice, irp, (byte) 0x20);
+	}
+
+	@Test
+	public void testDeviceHasInitialDelay() {
+		MultiLauncherDeviceSpecification spec = thunderMissileLauncher.getMultiLauncherDeviceSpecification();
+
+		assertThat(spec.minimumInitialStabilizationDelay(), is(600L));
+	}
+
+	@Test
+	public void testDeviceHasFiringDelay() {
+		MultiLauncherDeviceSpecification spec = thunderMissileLauncher.getMultiLauncherDeviceSpecification();
+
+		assertThat(spec.minimumFiringDelay(), is(3100L));
 	}
 
 	private void verifyCommandIsSynchronouslySubmittedWithCode(UsbDevice usbDevice, UsbControlIrp irp, byte commandCode)
